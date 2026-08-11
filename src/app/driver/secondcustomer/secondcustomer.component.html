@@ -1,0 +1,139 @@
+<div class="customer-page">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+        <div>
+            <span class="brand">RIDE<span>BOOK</span></span>
+            <h2>Book a Ride</h2>
+            <p>Enter your pickup and destination details.</p>
+        </div>
+        <a routerLink="/" class="back-button"> ← Home </a>
+    </div>
+
+    <!-- Ride Form -->
+    <div class="ride-card">
+        <form [formGroup]="rideForm" (ngSubmit)="createRide()">
+            <!-- Customer -->
+            <div class="form-section">
+                <h3>Customer</h3>
+                <div class="form-group">
+                    <label for="customerId">Customer ID</label>
+                    <input id="customerId" type="number" formControlName="customerId" class="form-control">
+                    <small *ngIf="rideForm.get('customerId')?.invalid &&rideForm.get('customerId')?.touched"
+                        class="error">
+                        Customer ID is required.
+                    </small>
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div class="form-section">
+                <h3>Trip Details</h3>
+                <div class="location-grid">
+                    <!-- Pickup -->
+                    <div class="location-box">
+                        <div class="location-title">
+                            <span class="location-dot pickup-dot"></span>
+                            Pickup
+                        </div>
+                        <div class="form-group">
+                            <label for="pickupLocation">
+                                Pickup Location
+                            </label>
+                            <input id="pickupLocation" type="text" formControlName="pickupLocation" class="form-control"
+                                placeholder="Enter pickup location">
+                        </div>
+                        <div class="coordinate-grid">
+                            <div class="form-group">
+                                <label for="pickupLatitude">
+                                    Latitude
+                                </label>
+                                <input id="pickupLatitude" type="number" step="any" formControlName="pickupLatitude"
+                                    class="form-control" placeholder="16.7050">
+                            </div>
+                            <div class="form-group">
+                                <label for="pickupLongitude">
+                                    Longitude
+                                </label>
+                                <input id="pickupLongitude" type="number" step="any" formControlName="pickupLongitude"
+                                    class="form-control" placeholder="74.2433">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Drop -->
+                    <div class="location-box">
+                        <div class="location-title">
+                            <span class="location-dot drop-dot"></span>
+                            Destination
+                        </div>
+                        <div class="form-group">
+                            <label for="dropLocation">
+                                Drop Location
+                            </label>
+                            <input id="dropLocation" type="text" formControlName="dropLocation" class="form-control"
+                                placeholder="Enter destination">
+                        </div>
+                        <div class="coordinate-grid">
+                            <div class="form-group">
+                                <label for="dropLatitude">
+                                    Latitude
+                                </label>
+                                <input id="dropLatitude" type="number" step="any" formControlName="dropLatitude"
+                                    class="form-control" placeholder="16.6913">
+                            </div>
+                            <div class="form-group">
+                                <label for="dropLongitude">
+                                    Longitude
+                                </label>
+                                <input id="dropLongitude" type="number" step="any" formControlName="dropLongitude"
+                                    class="form-control" placeholder="74.4604">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-footer">
+                <button type="submit" class="book-button" [disabled]="rideForm.invalid">
+                    Book Ride
+                </button>
+            </div>
+        </form>
+
+        <div class="ride-status-card" *ngIf="currentRide">
+            <h3>Current Ride</h3>
+            <div class="status-row">
+                <span>Pickup</span>
+                <strong>{{ currentRide.pickupLocation }}</strong>
+            </div>
+            <div class="status-row">
+                <span>Drop</span>
+                <strong>{{ currentRide.dropLocation }}</strong>
+            </div>
+            <div class="status-row">
+                <span>Status</span>
+                <strong class="status" [ngClass]="currentRide.rideStatus?.toLowerCase()">
+                    {{ currentRide.rideStatus }}
+                </strong>
+            </div>
+            <div *ngIf="rideExpired" class="ride-expired">
+
+                <h3>No Driver Accepted</h3>
+
+                <p>{{ expiredMessage }}</p>
+
+                <button type="button" class="try-again-btn" (click)="tryAgain()">
+
+                    Try Again
+
+                </button>
+
+            </div>
+            <p class="status-message">
+                {{ message }}
+            </p>
+        </div>
+    </div>
+</div>

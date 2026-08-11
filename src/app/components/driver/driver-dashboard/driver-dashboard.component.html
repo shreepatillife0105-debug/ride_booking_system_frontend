@@ -1,0 +1,121 @@
+<div class="driver-page">
+    <div class="dashboard-header">
+        <div>
+            <span class="brand">
+                RIDE<span>BOOK</span>
+            </span>
+            <h2>Driver Dashboard</h2>
+            <p>
+                Stay online and receive nearby ride requests.
+            </p>
+        </div>
+        <a routerLink="/" class="back-button">
+            ← Home
+        </a>
+    </div>
+
+    <!-- No Ride -->
+    <div class="empty-card" *ngIf="!currentRide">
+        <div class="empty-icon"> 🚗
+        </div>
+        <h3>Waiting for ride requests</h3>
+        <p>
+            Your dashboard is connected and listening for nearby rides.
+        </p>
+    </div>
+
+    <!-- New Ride -->
+    <div class="ride-request-card" *ngIf="currentRide">
+        <div class="request-header">
+            <div>
+                <span class="new-ride-badge">
+                    NEW RIDE
+                </span>
+                <h3>New Ride Request</h3>
+            </div>
+        </div>
+
+        <div class="ride-route">
+            <div class="route-item">
+                <div class="route-dot pickup-dot"></div>
+                <div>
+                    <small>Pickup</small>
+                    <h4>
+                        {{ currentRide.pickupLocation }}
+                    </h4>
+                </div>
+            </div>
+
+            <div class="route-line"></div>
+
+            <div class="route-item">
+                <div class="route-dot drop-dot"></div>
+                <div>
+                    <small>Destination</small>
+                    <h4>
+                        {{ currentRide.dropLocation }}
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="ride-details">
+            <div class="action-buttons">
+
+                <!-- PENDING -->
+                <ng-container *ngIf="currentRide?.rideStatus === 'PENDING'">
+
+                    <button class="accept-btn" (click)="acceptRide()" [disabled]="acceptingRide || rejectingRide">
+
+                        {{ acceptingRide ? 'Accepting...' : 'Accept Ride' }}
+
+                    </button>
+
+                    <button class="reject-btn" (click)="rejectRide()" [disabled]="rejectingRide || acceptingRide">
+
+                        {{ rejectingRide ? 'Rejecting...' : 'Reject' }}
+
+                    </button>
+
+                </ng-container>
+
+
+                <!-- ACCEPTED -->
+                <button *ngIf="currentRide?.rideStatus === 'ACCEPTED'" class="start-btn" (click)="startRide()"
+                    [disabled]="startingRide">
+
+                    {{ startingRide ? 'Starting...' : 'Start Ride' }}
+
+                </button>
+
+
+                <!-- ON_TRIP -->
+                <button *ngIf="currentRide?.rideStatus === 'ON_TRIP'" class="complete-btn" (click)="completeRide()"
+                    [disabled]="completingRide">
+
+                    {{ completingRide ? 'Completing...' : 'Complete Ride' }}
+
+                </button>
+
+            </div>
+
+            <div *ngIf="message" class="status-message">
+                {{ message }}
+            </div>
+
+            <div>
+                <small>Ride ID</small>
+                <strong> {{ currentRide.rideId }}</strong>
+            </div>
+
+            <div>
+                <small>Customer ID</small>
+                <strong>{{ currentRide.customerId }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
